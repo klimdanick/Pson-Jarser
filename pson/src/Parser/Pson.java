@@ -15,6 +15,7 @@ import java.util.Locale;
 import java.util.function.Function;
 
 import DataStructure.*;
+import ParseNodes.ParseNode;
 
 
 
@@ -23,124 +24,21 @@ public class Pson {
     public static void main(String[] args) {
 
     	System.out.println("| DEMO PSON |");
+    	String s = "{\n"
+    			+ "	\"dom\": \"tijmen speekenbrink\",\n"
+    			+ "	\"slim\": \"danick imholz\"\n"
+    			+ "},{"
+    			+ " \"test\": 5"
+    			+ "}";
+    	System.out.println(s+"\n");
+    	fromString(s);
     	
-    	JsonObject json = readFromFile("studentData.json");
-    	JsonArray cijfers = json.getArray("studenten").getObject(1).getArray("behaalde_cijfers");
-    	for (int i = 0; i < cijfers.size(); i++) {
-    		JsonObject obj = cijfers.getObject(i);
-    		System.out.print(obj.get("vakcode"));
-    		System.out.print(": ");
-    		System.out.println(obj.get("cijfer"));
-    	}
-    }
-
-    public static JsonObject fromString(String s){
-        JsonObject ret = new JsonObject();
-        //System.out.println(s);
-        s = s.replaceAll("\n", "");
-        s = s.replaceAll("\t", "");
-        //System.out.println(s);
-        //System.out.println("stom");
-        s = s.replaceFirst("\\{", "");
-        int g = s.lastIndexOf("}");
-        s = s.substring(0, g);
-        
-        //System.out.println(s);
-        String[] fields = splitIgnore(s, ',');
-        for (String f : fields) {
-        	//System.out.println(f);
-            String[] kvp = splitIgnore(f,':');
-            kvp[0] = kvp[0].replaceAll("\"", "");
-            if (kvp[1].startsWith(" ")) kvp[1]=kvp[1].replaceFirst(" ", "");
-            ret.set(kvp[0].replaceAll("\"", ""), f(kvp[1]).apply(kvp[1]));
-        }
-
-        return ret;
-    }
-
-    public static Function<String, Object> f(String s) {
-        if (s.startsWith("\u007b")) return Pson::parseObject;
-        else if (s.startsWith("\u005b")) return Pson::parseArray;
-        else if (s.contains("\"")) return Pson::parseString;
-        else if (s.toLowerCase(Locale.ROOT).contains("true")) return (S) -> true;
-        else if (s.toLowerCase(Locale.ROOT).contains("false")) return (S) -> false;
-        else if (s.contains(".")) return Double::parseDouble;
-        else if (s.length() > 0) return Pson::parseInt;
-        else return (S) -> false;
-    }
-
-    private static JsonObject parseObject(String s) {
-        if (s.startsWith(" ")) s = s.replaceFirst(" ", "");
-        return fromString(s);
-    }
-
-    public static String parseString(String s) {
-        if (s.startsWith(" ")) s = s.substring(1, s.length());
-        return s.replaceAll("\"", "");
-    }
-
-    public static Integer parseInt(String s) {
-        int value = Integer.parseInt(s.replaceAll(" ", ""));
-        if ((value+"").equals( s.replaceAll(" ", "")))
-            return value;
-        else return null;
-    }
-
-    public static JsonArray parseArray(String s) {
-        JsonArray a = new JsonArray();
-        s = s.replaceFirst("\\[", "");
-        s = s.substring(0, s.length()-1);
-        //System.out.println(s);
-        String[] fields2 = splitIgnore(s, ',');
-
-        for (String x : fields2) {
-            if (x.startsWith(" ")) x=x.replaceFirst(" ", "");
-            a.add(f(x).apply(x));
-        }
-        return a;
     }
     
-public static String[] splitIgnore(String s, char e) {
-        ArrayList<String> fields = new ArrayList<>();
-        //System.out.println("begin: " + s);
-        for (int i = 0; s.length() > 0; i++) {
-        	//System.out.println("pre: " + s);
-            if (s.charAt(i) == '[' || s.charAt(i) == '{') {
-                //System.out.println(s);
-                int found = 1;
-                //System.out.println(i + " " + s.charAt(i) + " " + found);
-                while (found > 0 && i < s.length()-1) {
-
-
-                    i++;
-                    //System.out.println(s.charAt(i));
-                    if (s.charAt(i) == '[' || s.charAt(i) == '{') {
-                        found++;
-                        //System.out.println(i + " " + s.charAt(i) + " " + found);
-                    }
-                    if (s.charAt(i) == ']' || s.charAt(i) == '}') {
-                        found--;
-                       // System.out.println(i + " " + s.charAt(i) + " " + found);
-                    }
-
-                }
-            }
-            if (i == s.length()-1) {
-                fields.add(s);
-                //System.out.println("field: " + s);
-                s = "";
-                break;
-            }
-             else if (s.charAt(i) == e) {
-                fields.add(s.substring(0, i));
-                s = s.substring(i+1);
-                i = -1;
-             }
-
-        }
-        String[] fields2 = new String[fields.size()];
-        for (int i = 0; i < fields.size(); i++) fields2[i] = fields.get(i);
-        return fields2;         //s.split(",");
+    public static JsonObject fromString(String s) {
+    	Tokenizer tk = new Tokenizer(s);
+    	ParseNode tree = new ParseNode(tk.tokens);
+    	return null;
     }
     
     
