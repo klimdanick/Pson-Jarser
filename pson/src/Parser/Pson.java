@@ -25,8 +25,8 @@ public class Pson {
 
     	System.out.println("| DEMO PSON |");
     	String s = "{\n"
-    			+ "	\"dom\": \"tijmen speekenbrink\",\n"
-    			+ "	\"slim\": \"danick imholz\"\n"
+    			+ "	\"dom\": \"mod\",\n"
+    			+ "	\"slim\": \"mils\"\n"
     			+ "},{"
     			+ " \"test\": 5"
     			+ "}";
