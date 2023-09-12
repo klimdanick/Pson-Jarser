@@ -8,10 +8,10 @@ public class ObjectNode extends ParseNode{
 
 	public ObjectNode(ArrayList<Token> subTable) {
 		super(subTable);
-		for (Token t : subTable) {
-			System.out.println(t);
-		}
-		System.out.println();
+		//for (Token t : subTable) {
+		//	System.out.println(t);
+		//}
+		//System.out.println();
 	}
 
 }

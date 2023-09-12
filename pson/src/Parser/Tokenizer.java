@@ -15,7 +15,8 @@ public class Tokenizer {
 	public Tokenizer(String s) {
 		for (int i = 0; i < s.length(); i++) {
 			if (!Whitespace.contains(s.charAt(i) + "") || buffer.length() > 0) buffer += s.charAt(i);
-			//System.out.println(buffer);
+			System.out.println(buffer);
+			
 			for (Token t : tokensAvailable) {
 				if (t.identify(buffer)) {
 					try {
