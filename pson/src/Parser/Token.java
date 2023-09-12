@@ -136,6 +136,27 @@ public abstract class Token {
 		//public String toString() {return s;}
 		@Override
 		public boolean identify(String s) {
+			boolean isString = s.startsWith("\"") && s.charAt(s.length()-2)=='\"' && s.length() > 1;
+			boolean isDouble = isDouble(s);
+			boolean isInt = isInt(s);
+			return isString;
+		}
+		
+		private boolean isDouble(String s) {
+			for (int i = 0; i < s.length(); i++) {
+				char c = s.charAt(i);
+				if (!(Character.isDigit(c) || c == '.') && i != s.length()-1) return false;
+				if (!(c == ',' || c == '}' || c == ']') && i == s.length()-1) return false;
+			}
+			return true;
+		}
+		
+		private boolean isInt(String s) {
+			for (int i = 0; i < s.length(); i++) {
+				char c = s.charAt(i);
+				if (!Character.isDigit(c) && i != s.length()-1) return false;
+				if (!(c == ',' || c == '}' || c == ']') && i == s.length()-1) return false;
+			}
 			return true;
 		}
 		

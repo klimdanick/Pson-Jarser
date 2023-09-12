@@ -46,7 +46,7 @@ public class ParseNode {
 				//System.out.println("tk: " + t);
 			}
 		}
-		System.out.println();
+		//System.out.println();
 		return sub;
 	}
 	
@@ -57,5 +57,15 @@ public class ParseNode {
 			sub.add(t);
 		}
 		return sub;
+	}
+	
+	public String toString() {
+		return "{" + toJSON() + "}";
+	}
+	
+	public String toJSON() {
+		String s = "";
+		for (int i = 0; i < children.size()-1; i++) s += children.get(i).toString() + ",";
+		return s + children.get(children.size()-1).toString();
 	}
 }

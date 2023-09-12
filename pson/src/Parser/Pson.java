@@ -25,10 +25,9 @@ public class Pson {
 
     	System.out.println("| DEMO PSON |");
     	String s = "{\n"
-    			+ "	\"dom\": \"mod\",\n"
-    			+ "	\"slim\": \"mils\"\n"
-    			+ "},{"
-    			+ " \"test\": 5"
+    			+ "	\"dom\": \"tijmen speekenbrink\",\n"
+    			+ "	\"slim\": \"danick imholz\",\n"
+    			+ "	\"test\": [{}, {}, {}]\n"
     			+ "}";
     	System.out.println(s+"\n");
     	fromString(s);
@@ -38,6 +37,7 @@ public class Pson {
     public static JsonObject fromString(String s) {
     	Tokenizer tk = new Tokenizer(s);
     	ParseNode tree = new ParseNode(tk.tokens);
+    	System.out.println(tree.toJSON());
     	return null;
     }
     
