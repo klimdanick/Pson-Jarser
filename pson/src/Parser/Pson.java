@@ -11,11 +11,7 @@ import java.lang.reflect.Modifier;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Locale;
-import java.util.function.Function;
-
 import DataStructure.*;
-import ParseNodes.ParseNode;
 
 
 
@@ -36,9 +32,8 @@ public class Pson {
     
     public static JsonObject fromString(String s) {
     	Tokenizer tk = new Tokenizer(s);
-    	ParseNode tree = new ParseNode(tk.tokens);
-    	System.out.println(tree.toJSON());
-    	return null;
+    	System.out.println("\n"+tk.toJson());
+    	return tk.toJson();
     }
     
     
