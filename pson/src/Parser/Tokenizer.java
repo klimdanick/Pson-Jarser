@@ -23,7 +23,7 @@ public class Tokenizer {
 					System.out.println(strBuf);
 					tk = new Token.Obj();
 					tk.parse(strBuf);
-					System.out.println(tk.toString());
+					//System.out.println(tk.toString());
 				}
 			}
 		}

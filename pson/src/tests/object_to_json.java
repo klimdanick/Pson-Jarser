@@ -29,7 +29,7 @@ public class object_to_json {
 		System.out.println("\n++++\n");
 		JsonObject json2 = Pson.fromString(str);
 		System.out.println("\n-------------------------------------\n");
-		assert(json2.equals(json));
+		assert(json2.toString().equals(json.toString()));
 	}
 	
 	@Test
@@ -41,7 +41,7 @@ public class object_to_json {
 		System.out.println("\n++++\n");
 		JsonObject json2 = Pson.fromString(str);
 		System.out.println("\n-------------------------------------\n");
-		assert(json2.equals(json));
+		assert(json2.toString().equals(json.toString()));
 	}
 	
 	@Test
@@ -53,7 +53,7 @@ public class object_to_json {
 		System.out.println("\n++++\n");
 		JsonObject json2 = Pson.fromString(str);
 		System.out.println("\n-------------------------------------\n");
-		assert(json2.equals(json));
+		assert(json2.toString().equals(json.toString()));
 	}
 	
 	@Test
