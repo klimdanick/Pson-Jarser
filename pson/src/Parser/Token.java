@@ -116,6 +116,7 @@ public abstract class Token {
 	
 	public static class Value <T> extends Token{
 		public Object value;
+		public Class type;
 		public Value() {}
 		public void parse(String str) {
 			str = str.stripLeading().stripTrailing();
@@ -124,15 +125,26 @@ public abstract class Token {
 				Obj obj = new Obj();
 				obj.parse(str);
 				setValue(obj);
+				type = Obj.class;
 			}
 			else if (str.startsWith("[")) {
 				Arr arr = new Arr();
 				arr.parse(str);
 				setValue(arr);
+				type = Arr.class;
 			} 
-			else if (str.startsWith("\"")) setValue(str.replace("\"", "").replace("\"", ""));
-			else if (str.contains(".")) setValue(Double.parseDouble(str));
-			else setValue(Integer.parseInt(str));
+			else if (str.startsWith("\"")) {
+				setValue(str.replace("\"", "").replace("\"", ""));
+				type = String.class;
+			}
+			else if (str.contains(".")) {
+				setValue(Double.parseDouble(str));
+				type = Double.class;
+			}
+			else {
+				setValue(Integer.parseInt(str));
+				type = Integer.class;
+			}
 		}
 		
 		private <K> void setValue(K value) {
