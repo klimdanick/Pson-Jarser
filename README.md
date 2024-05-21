@@ -20,7 +20,9 @@ To include this library in your project, follow these steps:
 
 > 2: add the jar file to your classpath
 
-Now Pson jarser is ready to use
+Now Pson jarser is ready to use.
+
+You can find more detailed instructions for eclipse and intelliJ on the [Wiki home page](https://github.com/klimdanick/Pson-Jarser/wiki).
 
 ## Usage
 
