@@ -1,12 +1,12 @@
-package DataStructure;
-
-import Parser.Pson;
+package nl.klimdanick.DataStructure;
 
 import java.io.*;
 import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+
+import nl.klimdanick.Parser.Pson;
 
 public class JsonObject {
     private static Class[] allowedTypes = {String.class, Integer.class, Double.class, Boolean.class, JsonArray.class, JsonObject.class};

@@ -1,4 +1,4 @@
-package Parser;
+package nl.klimdanick.Parser;
 
 import java.util.ArrayList;
 import java.util.HashMap;

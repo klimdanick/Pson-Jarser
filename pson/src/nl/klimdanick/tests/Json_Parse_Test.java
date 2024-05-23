@@ -1,4 +1,4 @@
-package tests;
+package nl.klimdanick.tests;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -6,9 +6,9 @@ import org.junit.rules.TestRule;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
 
-import DataStructure.JsonArray;
-import DataStructure.JsonObject;
-import Parser.Pson;
+import nl.klimdanick.DataStructure.JsonArray;
+import nl.klimdanick.DataStructure.JsonObject;
+import nl.klimdanick.Parser.Pson;
 
 public class Json_Parse_Test {
 	

@@ -1,10 +1,10 @@
-package Parser;
+package nl.klimdanick.Parser;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
-import DataStructure.JsonArray;
-import DataStructure.JsonObject;
+import nl.klimdanick.DataStructure.JsonArray;
+import nl.klimdanick.DataStructure.JsonObject;
 
 public class Tokenizer {
 	

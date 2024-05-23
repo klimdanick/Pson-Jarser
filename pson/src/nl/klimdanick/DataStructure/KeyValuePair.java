@@ -1,4 +1,4 @@
-package DataStructure;
+package nl.klimdanick.DataStructure;
 
 public class KeyValuePair <T> {
     public String key;

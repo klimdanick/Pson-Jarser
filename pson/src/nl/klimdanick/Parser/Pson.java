@@ -1,4 +1,4 @@
-package Parser;
+package nl.klimdanick.Parser;
 
 import java.awt.Color;
 import java.io.File;
@@ -11,7 +11,8 @@ import java.lang.reflect.Modifier;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import DataStructure.*;
+
+import nl.klimdanick.DataStructure.*;
 
 
 
