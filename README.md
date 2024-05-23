@@ -2,15 +2,14 @@
 
 Json is a very powerfull data format, and it is used in combination with a lot of programming languages. However, in java it has always been a little funky. Many json parsers have been made for java, but all of them are more complicated then they have to be, so therefor **Pson Jarser** has been made. It is made to be easy for every programmer and lets you write clean and good to read code.
 
-## Table of contents
-
-
-
 ## Features
 
 * json string parsing: usefull in e.g. an HTTP API to handle json request body's
 * json file parsing: usefull for reading config files or loading complex data structures
 * jsonObject to json string conversion: Create an json object in your code and convert it to valid json format to store the data or send the data via an http response.
+
+## Documentation
+Check out the [Wiki](https://github.com/klimdanick/Pson-Jarser/wiki) to find all the detailed documentation and examples.
 
 ## Installation
 
