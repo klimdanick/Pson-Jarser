@@ -75,6 +75,7 @@ public abstract class Token {
 				if (charBuf[i] == '[') SQBcount++;
 				if (charBuf[i] == ']') SQBcount--;
 				if (SQBcount == -1 || (SQBcount == 0 && CBcount == 0 && charBuf[i] == ',')) {
+					if (strBuf.length() == 0) continue;
 					Value val = new Value();
 					val.parse(strBuf);
 					valBuf.add(val);
@@ -104,8 +105,11 @@ public abstract class Token {
 			int firstCol = str.indexOf(':');
 			str = str.substring(firstCol+1, str.length()-1).stripLeading();
 			value = new Value();
-			
-			value.parse(str);
+			if (str.length() > 0)
+				value.parse(str);
+			else {
+				System.err.append("FIX");
+			}
 		}
 		
 		public String toString() {
@@ -124,31 +128,39 @@ public abstract class Token {
 			if (str.startsWith("{")) {
 				Obj obj = new Obj();
 				obj.parse(str);
-				setValue(obj);
+				value = obj;
 				type = Obj.class;
 			}
 			else if (str.startsWith("[")) {
 				Arr arr = new Arr();
 				arr.parse(str);
-				setValue(arr);
+				value = arr;
 				type = Arr.class;
 			} 
 			else if (str.startsWith("\"")) {
-				setValue(str.replace("\"", "").replace("\"", ""));
+				value = str.replace("\"", "").replace("\"", "");
 				type = String.class;
 			}
-			else if (str.contains(".")) {
-				setValue(Double.parseDouble(str));
+			else if (str.equals("true")) {
+				value = true;
+				type = Boolean.class;
+			}
+			else if (str.equals("false")) {
+				value = false;
+				type = Boolean.class;
+			}
+			else if (str.contains(".") || str.contains("e") || str.contains("E")) {
+				value = Double.parseDouble(str);
 				type = Double.class;
 			}
+			else if (str.contains("null")) {
+				value = null;
+				type = null;
+			}
 			else {
-				setValue(Integer.parseInt(str));
+				value = Integer.parseInt(str);
 				type = Integer.class;
 			}
-		}
-		
-		private <K> void setValue(K value) {
-			this.value = value;
 		}
 		
 		public String toString() {

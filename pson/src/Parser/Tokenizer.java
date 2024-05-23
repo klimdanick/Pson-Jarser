@@ -11,19 +11,38 @@ public class Tokenizer {
 	private Token tk;
 
 	public Tokenizer(String s) {
-		String strBuf = "";
-		char[] charBuf = s.toCharArray();
-		int CBcount = 0;
-		for (int i = 0; i < charBuf.length; i++) {
-			if (charBuf[i] == '{') CBcount++; 
-			if (CBcount > 0) strBuf+=charBuf[i];
-			if (charBuf[i] == '}') {
-				CBcount--;
-				if (CBcount == 0) {
-					System.out.println(strBuf);
-					tk = new Token.Obj();
-					tk.parse(strBuf);
-					//System.out.println(tk.toString());
+		
+		int firstCB = s.indexOf('{');
+		int firstSQB = s.indexOf('[');
+		
+		if (firstCB < firstSQB) {
+			String strBuf = "";
+			char[] charBuf = s.toCharArray();
+			int CBcount = 0;
+			for (int i = 0; i < charBuf.length; i++) {
+				if (charBuf[i] == '{') CBcount++; 
+				if (CBcount > 0) strBuf+=charBuf[i];
+				if (charBuf[i] == '}') {
+					CBcount--;
+					if (CBcount == 0) {
+						tk = new Token.Obj();
+						tk.parse(strBuf);
+					}
+				}
+			}
+		} else {
+			String strBuf = "";
+			char[] charBuf = s.toCharArray();
+			int SQBcount = 0;
+			for (int i = 0; i < charBuf.length; i++) {
+				if (charBuf[i] == '[') SQBcount++; 
+				if (SQBcount > 0) strBuf+=charBuf[i];
+				if (charBuf[i] == ']') {
+					SQBcount--;
+					if (SQBcount == 0) {
+						tk = new Token.Arr();
+						tk.parse(strBuf);
+					}
 				}
 			}
 		}

@@ -13,6 +13,15 @@ public class JsonObject {
     public ArrayList<KeyValuePair> fields = new ArrayList<>();
 
     public <K> JsonObject set(String key, K value) {
+    	if (value == null) {
+    		for(KeyValuePair kvp : fields) if (kvp.key.equals(key)){
+                kvp.value = value;
+                return this;
+            }
+            fields.add(new KeyValuePair(key, value));
+            return this;
+    	}
+    	
         for (Class T : allowedTypes) if (value.getClass().equals(T)) {
             for(KeyValuePair kvp : fields) if (kvp.key.equals(key)){
                 kvp.value = value;
@@ -82,7 +91,7 @@ public class JsonObject {
     public String toString() {
         String retString = "{\n";
         for (KeyValuePair kvp : fields)
-            retString+= "\t" + (kvp.value.getClass() == JsonObject.class ? kvp.toString().replaceAll("\n", "\n\t") : kvp.toString()) + (fields.indexOf(kvp) == fields.size()-1 ? "\n" : ",\n");
+            retString+= "\t" + (kvp.value == null ? "\""+kvp.key + "\": null" : kvp.value.getClass() == JsonObject.class ? kvp.toString().replaceAll("\n", "\n\t") : kvp.toString()) + (fields.indexOf(kvp) == fields.size()-1 ? "\n" : ",\n");
 
 
         retString+="}";

@@ -1,0 +1,19 @@
+{
+  "level1": {
+    "level2": {
+      "level3": {
+        "level4": {
+          "level5": {
+            "level6": {
+              "level7": {
+                "array": [1, {"key": "value"}, [2, 3, {"nested_key": "nested_value"}]],
+                "boolean": true,
+                "null_value": null
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

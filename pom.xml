@@ -1,8 +1,22 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>Pson-Jarser</groupId>
+  <groupId>nl.klimdanick.pson</groupId>
   <artifactId>Pson-Jarser</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>2.0.0</version>
+  <packaging>jar</packaging>
+  
+  <name>Pson Jarser</name>
+  <description>A simple json parser for java</description>
+  <url>https://github.com/klimdanick/Pson-Jarser</url>
+  
+  <licenses>
+    <license>
+      <name>MIT license</name>
+      <url>https://github.com/klimdanick/Pson-Jarser/blob/main/LICENSE</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  
   <build>
     <sourceDirectory>pson/src</sourceDirectory>
     <resources>

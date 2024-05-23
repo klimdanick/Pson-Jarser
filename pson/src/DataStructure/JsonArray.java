@@ -16,7 +16,12 @@ public class JsonArray extends ArrayList{
         String s = "[";
         for (int i = 0; i < this.size(); i++) {
             Object o = this.get(i);
-            if (o.getClass() == allowedTypes[5]) s += "\n\t"+o.toString().replaceAll("\n", "\n\t");
+            if (o == null) {
+            	s+="null";
+            	if (i<this.size()-1) s+=", ";
+            	continue;
+            }
+            else if (o.getClass() == allowedTypes[5]) s += "\n\t"+o.toString().replaceAll("\n", "\n\t");
             else if (o.getClass() == allowedTypes[0]) s += "\"" + o.toString() + "\"";
             else s+=o.toString();
             if (i<this.size()-1) s+=", ";
