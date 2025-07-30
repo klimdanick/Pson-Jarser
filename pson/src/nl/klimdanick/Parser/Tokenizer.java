@@ -15,18 +15,18 @@ public class Tokenizer {
 		int firstCB = s.indexOf('{');
 		int firstSQB = s.indexOf('[');
 		
-		if (firstCB < firstSQB) {
-			String strBuf = "";
+		if (firstCB != -1 && (firstCB < firstSQB || firstSQB == -1)) {
+			StringBuilder strBuf = new StringBuilder();
 			char[] charBuf = s.toCharArray();
 			int CBcount = 0;
 			for (int i = 0; i < charBuf.length; i++) {
-				if (charBuf[i] == '{') CBcount++; 
-				if (CBcount > 0) strBuf+=charBuf[i];
+				if (charBuf[i] == '{') CBcount++;
+				if (CBcount > 0) strBuf.append(charBuf[i]);
 				if (charBuf[i] == '}') {
 					CBcount--;
 					if (CBcount == 0) {
 						tk = new Token.Obj();
-						tk.parse(strBuf);
+						tk.parse(strBuf.toString());
 					}
 				}
 			}
@@ -46,6 +46,8 @@ public class Tokenizer {
 				}
 			}
 		}
+		
+//		System.out.println("tk: " + tk);
 	}
 	
 	

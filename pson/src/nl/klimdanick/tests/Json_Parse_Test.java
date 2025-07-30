@@ -11,7 +11,7 @@ import nl.klimdanick.DataStructure.JsonObject;
 import nl.klimdanick.Parser.Pson;
 
 public class Json_Parse_Test {
-	
+
 	@Rule
     public TestWatcher watchman = new TestWatcher() {
         @Override
@@ -21,6 +21,15 @@ public class Json_Parse_Test {
             // You can print additional information or perform actions here
         }
     };
+
+    @Test
+	public void noArrayTest() {
+    	String jsonString = "{\"test\": 10}";
+    	JsonObject jsonObject = Pson.fromString(jsonString);
+    	jsonString=jsonString.replaceAll("\\s", "");
+		String parsedJsonString = jsonObject.toString().replaceAll("\\s", "");
+		assert(jsonString.equals(parsedJsonString));
+    }
 
 	@Test
 	public void testComplexJson() {
@@ -44,12 +53,12 @@ public class Json_Parse_Test {
 		+ "  }\r\n"
 		+ "}";
 		JsonObject jsonObject = Pson.fromString(jsonString);
-		
+
 		jsonString=jsonString.replaceAll("\\s", "");
 		String parsedJsonString = jsonObject.toString().replaceAll("\\s", "");
 		assert(jsonString.equals(parsedJsonString));
 	}
-	
+
 	@Test
 	public void testComplexJson2() {
 		String jsonString = "{\r\n"
@@ -73,26 +82,26 @@ public class Json_Parse_Test {
 				+ "  }\r\n"
 				+ "}";
 		JsonObject jsonObject = Pson.fromString(jsonString);
-		
+
 		jsonString=jsonString.replaceAll("\\s", "");
 		String parsedJsonString = jsonObject.toString().replaceAll("\\s", "");
 		assert(jsonString.equals(parsedJsonString));
 	}
-	
+
 	@Test
 	public void testSpecialNumbers() {
 		String jsonString = "{\r\n"
 				+ "  \"special_numbers\": [0, -0, 1e10, 1e-10, -1e10, -1e-10, 0.1e1, 1.0, -1.0, 1.7976931348623157E308, -1.7976931348623157E308, 5E-324, -5E-324]\r\n"
 				+ "}";
 		JsonObject jsonObject = Pson.fromString(jsonString);
-		
-		
+
+
 		JsonObject expectedJson = new JsonObject().set("special_numbers", new JsonArray().addItem(0).addItem(-0).addItem(1e10).addItem(1e-10).addItem(-1e10).addItem(-1e-10).addItem(0.1e1).addItem(1.0).addItem(-1.0).addItem(1.7976931348623157E308).addItem(-1.7976931348623157E308).addItem(5e-324).addItem(-5e-324));
 		String expectedJsonString = expectedJson.toString().replaceAll("\\s", "").toLowerCase();
 		String parsedJsonString = jsonObject.toString().replaceAll("\\s", "").toLowerCase();
 		assert(expectedJsonString.equals(parsedJsonString));
 	}
-	
+
 	@Test
 	public void testNestedMix() {
 		String jsonString = "{\r\n"
@@ -100,13 +109,13 @@ public class Json_Parse_Test {
 				+ "    \"a\": [1, {\"b\": [2, {\"c\": [3, {\"d\": [4, {\"e\": [5, {\"f\": [6, {\"g\": [7, {\"h\": [8, {\"i\": [9, {\"j\": [10, {\"k\": \"deep\"}]}]}]}]}]}]}]}]}]}]}\r\n"
 				+ "  }";
 		JsonObject jsonObject = Pson.fromString(jsonString);
-		
-		
+
+
 		jsonString=jsonString.replaceAll("\\s", "");
 		String parsedJsonString = jsonObject.toString().replaceAll("\\s", "");
 		assert(jsonString.equals(parsedJsonString));
 	}
-	
+
 	@Test
 	public void test_Large_mixed_array() {
 		String jsonString = "{\r\n"
@@ -119,13 +128,13 @@ public class Json_Parse_Test {
 				+ "  ]\r\n"
 				+ "}";
 		JsonObject jsonObject = Pson.fromString(jsonString);
-		
-		
+
+
 		jsonString=jsonString.replaceAll("\\s", "");
 		String parsedJsonString = jsonObject.toString().replaceAll("\\s", "");
 		assert(jsonString.equals(parsedJsonString));
 	}
-	
+
 	@Test
 	public void test_complex_structure() {
 		String jsonString = "{\r\n"
@@ -141,8 +150,8 @@ public class Json_Parse_Test {
 				+ "  }\r\n"
 				+ "}";
 		JsonObject jsonObject = Pson.fromString(jsonString);
-		
-		
+
+
 		jsonString=jsonString.replaceAll("\\s", "");
 		String parsedJsonString = jsonObject.toString().replaceAll("\\s", "");
 		assert(jsonString.equals(parsedJsonString));

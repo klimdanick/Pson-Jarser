@@ -8,7 +8,15 @@ public class JsonArray extends ArrayList{
 	private static Class[] allowedTypes = {String.class, Integer.class, Double.class, Boolean.class, JsonArray.class, JsonObject.class};
 	
     public JsonArray addItem(Object o) {
-        super.add(o);
+    	if (o == null) {
+    		super.add(o);
+    		return this;
+    	}
+    	boolean legal = false;
+    	for (int i = 0; i < allowedTypes.length && !legal; i++)
+    		if (o.getClass().equals(allowedTypes[i])) legal = true;
+    	if (legal)
+    		super.add(o);
         return this;
     }
 

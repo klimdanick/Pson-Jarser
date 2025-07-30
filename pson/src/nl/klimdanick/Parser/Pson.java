@@ -1,18 +1,14 @@
 package nl.klimdanick.Parser;
 
-import java.awt.Color;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 
-import nl.klimdanick.DataStructure.*;
+import nl.klimdanick.DataStructure.JsonObject;
 
 
 
@@ -20,15 +16,15 @@ public class Pson {
 	
     public static void main(String[] args) {
 
-    	System.out.println("| DEMO PSON |");
-    	JsonObject json = Pson.readFromFile("res/demo.json");
+//    	System.out.println("| DEMO PSON |");
+    	JsonObject json = Pson.readFromFile("C://users/danick/Downloads/huge_json_example.json");
+//        JsonObject json = Pson.readFromFile("C://users/danick/Downloads/message.txt");
     	System.out.println(json);
-    	
     }
     
     public static JsonObject fromString(String s) {
     	Tokenizer tk = new Tokenizer(s);
-    	System.out.println(tk.toString());
+//    	System.out.println(tk.toString());
     	return tk.toJson();
     }
 
@@ -40,21 +36,28 @@ public class Pson {
             return false;
         }
         try {
-
+        	
+        	Files.write(Paths.get(path), obj.toString().getBytes(StandardCharsets.UTF_8));
+        	
+        	/*
             PrintWriter writer = new PrintWriter(path, "UTF-8");
             writer.print(obj.toString());
             writer.close();
+            */
             return true;
         } catch (FileNotFoundException e) {
             return false;
         } catch (UnsupportedEncodingException e) {
             return false;
-        }
+        } catch (IOException e) {
+        	return false;
+		}
     }
 
     public static JsonObject readFromFile(String path) {
         try {
         	String s = Files.readString(Paths.get(path));
+//        	System.out.println(s);
             return Pson.fromString(s);
         } catch (IOException e) {
             e.printStackTrace();
