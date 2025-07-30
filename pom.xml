@@ -1,49 +1,75 @@
-<project>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
   <modelVersion>4.0.0</modelVersion>
+
   <groupId>nl.klimdanick.pson</groupId>
   <artifactId>Pson-Jarser</artifactId>
   <version>2.0.0</version>
   <packaging>jar</packaging>
-  
+
   <name>Pson Jarser</name>
-  <description>A simple json parser for java</description>
+  <description>A simple JSON parser for Java</description>
   <url>https://github.com/klimdanick/Pson-Jarser</url>
-  
+
   <licenses>
     <license>
-      <name>MIT license</name>
+      <name>MIT License</name>
       <url>https://github.com/klimdanick/Pson-Jarser/blob/main/LICENSE</url>
       <distribution>repo</distribution>
     </license>
   </licenses>
-  
+
+  <properties>
+    <maven.compiler.release>21</maven.compiler.release>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
   <build>
-    <sourceDirectory>pson/src</sourceDirectory>
-    <resources>
-      <resource>
-        <directory>pson</directory>
-        <excludes>
-          <exclude>**/*.java</exclude>
-        </excludes>
-      </resource>
-    </resources>
     <plugins>
+      <!-- Compiler plugin -->
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.8.1</version>
+        <version>3.11.0</version>
         <configuration>
-          <release>16</release>
+          <release>21</release>
+        </configuration>
+      </plugin>
+
+      <!-- Surefire for JUnit 5 -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.2.5</version>
+      </plugin>
+
+      <!-- Optional: Executable JAR support -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.3.0</version>
+        <configuration>
+          <archive>
+            <manifest>
+              <mainClass>nl.klimdanick.pson.Main</mainClass>
+            </manifest>
+          </archive>
         </configuration>
       </plugin>
     </plugins>
   </build>
+
   <dependencies>
-	  <!-- https://mvnrepository.com/artifact/junit/junit -->
-		<dependency>
-		    <groupId>junit</groupId>
-		    <artifactId>junit</artifactId>
-		    <version>4.13.2</version>
-		    <scope>test</scope>
-		</dependency>
+    <!-- JUnit 5 -->
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <version>5.10.2</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
+
 </project>

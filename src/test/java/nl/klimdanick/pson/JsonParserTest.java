@@ -1,26 +1,15 @@
-package nl.klimdanick.tests;
+package nl.klimdanick.pson;
 
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TestRule;
-import org.junit.rules.TestWatcher;
-import org.junit.runner.Description;
+
+import org.junit.jupiter.api.Test;
 
 import nl.klimdanick.DataStructure.JsonArray;
 import nl.klimdanick.DataStructure.JsonObject;
 import nl.klimdanick.Parser.Pson;
 
-public class Json_Parse_Test {
+public class JsonParserTest {
 
-	@Rule
-    public TestWatcher watchman = new TestWatcher() {
-        @Override
-        protected void failed(Throwable e, Description description) {
-            System.out.println("Test failed: " + description.getMethodName());
-            System.out.println("Exception message: " + e.getMessage());
-            // You can print additional information or perform actions here
-        }
-    };
+
 
     @Test
 	public void noArrayTest() {
