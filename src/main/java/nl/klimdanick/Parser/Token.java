@@ -1,7 +1,6 @@
 package nl.klimdanick.Parser;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public abstract class Token {
 	public abstract String toString();
@@ -19,7 +18,7 @@ public abstract class Token {
 			StringBuilder strBuf = new StringBuilder();
 			char[] charBuf = str.toCharArray();
 			int quoteCount = 0;
-			String keyBuf;
+
 			for (int i = 0; i < charBuf.length; i++) {
 				if (charBuf[i] == '"') {
 					quoteCount++;
@@ -149,16 +148,12 @@ public abstract class Token {
 			}
 
 			value = new Value();
-			if (!str.isEmpty())
-				value.parse(str);
-			else {
-				System.err.append("FIX");
-			}
+			value.parse(str);
 		}
 
 		public String toString() {
 			StringBuilder str = new StringBuilder("Key {" + key + "}:");
-			if (value != null) str.append(value.toString());
+			if (value != null) str.append(value);
 			else str.append("null");
 			return str.toString();
 		}
@@ -224,7 +219,7 @@ public abstract class Token {
 
 		public String toString() {
 			StringBuilder str = new StringBuilder("Value {");
-			if (value != null) str.append(value.toString());
+			if (value != null) str.append(value);
 			else str.append("null");
 			str.append("}");
 			return str.toString();

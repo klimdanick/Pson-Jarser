@@ -5,8 +5,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Set;
 
-import nl.klimdanick.Parser.Pson;
-
 public class JsonObject {
     private static final Set<Class<?>> allowedTypes = Set.of(String.class, Integer.class, Double.class, Boolean.class, JsonArray.class, JsonObject.class);
     public ArrayList<KeyValuePair> fields = new ArrayList<>();
@@ -105,7 +103,7 @@ public class JsonObject {
         try {
 
             PrintWriter writer = new PrintWriter(path, StandardCharsets.UTF_8);
-            writer.println(this.toString());
+            writer.println(this);
             writer.close();
             return true;
         } catch (IOException e) {

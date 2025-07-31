@@ -4,7 +4,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Set;
 
-public class JsonArray extends ArrayList{
+public class JsonArray extends ArrayList<Object>{
 
     private static final Set<Class<?>> allowedTypes = Set.of(String.class, Integer.class, Double.class, Boolean.class, JsonArray.class, JsonObject.class);
 	
@@ -31,8 +31,8 @@ public class JsonArray extends ArrayList{
             	continue;
             }
             else if (o.getClass() == JsonObject.class) s.append("\n\t").append(o.toString().replaceAll("\n", "\n\t"));
-            else if (o.getClass() == String.class) s.append("\"").append(o.toString()).append("\"");
-            else s.append(o.toString());
+            else if (o.getClass() == String.class) s.append("\"").append(o).append("\"");
+            else s.append(o);
             if (i<this.size()-1) s.append(", ");
             if (o.getClass() == JsonObject.class) s.append("\n\t");
         }
@@ -61,9 +61,5 @@ public class JsonArray extends ArrayList{
 
     public boolean getBoolean(int i) {
         return (boolean) this.get(i);
-    }
-
-    public <T> T get(int i, Type T){
-        return (T) get(i);
     }
 }
