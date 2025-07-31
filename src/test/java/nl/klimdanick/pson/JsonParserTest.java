@@ -9,8 +9,6 @@ import nl.klimdanick.Parser.Pson;
 
 public class JsonParserTest {
 
-
-
     @Test
 	public void noArrayTest() {
     	String jsonString = "{\"test\": 10}";

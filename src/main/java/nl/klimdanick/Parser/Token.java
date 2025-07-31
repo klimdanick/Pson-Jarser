@@ -90,25 +90,25 @@ public abstract class Token {
 			int CBcount = 0;
 			int SQBcount = 0;
 
-			for (int i = 0; i < charBuf.length; i++) {
-				if (charBuf[i] == '{') CBcount++;
-				if (charBuf[i] == '}') CBcount--;
-				if (charBuf[i] == '[') SQBcount++;
-				if (charBuf[i] == ']') SQBcount--;
-				if (SQBcount == -1 || (SQBcount == 0 && CBcount == 0 && charBuf[i] == ',')) {
-					if (strBuf.isEmpty()) continue;
-					try {
-						Value val = new Value();
-						val.parse(strBuf.toString());
-						valBuf.add(val);
-					} catch (Exception e) {
-						throw new RuntimeException("[Arr] Failed to parse array value: " + e.getMessage(), e);
-					}
-					strBuf.setLength(0);
-					continue;
-				}
-				strBuf.append(charBuf[i]);
-			}
+            for (char c : charBuf) {
+                if (c == '{') CBcount++;
+                if (c == '}') CBcount--;
+                if (c == '[') SQBcount++;
+                if (c == ']') SQBcount--;
+                if (SQBcount == -1 || (SQBcount == 0 && CBcount == 0 && c == ',')) {
+                    if (strBuf.isEmpty()) continue;
+                    try {
+                        Value val = new Value();
+                        val.parse(strBuf.toString());
+                        valBuf.add(val);
+                    } catch (Exception e) {
+                        throw new RuntimeException("[Arr] Failed to parse array value: " + e.getMessage(), e);
+                    }
+                    strBuf.setLength(0);
+                    continue;
+                }
+                strBuf.append(c);
+            }
 			values = new Value[valBuf.size()];
 			for (int i = 0; i < valBuf.size(); i++) {
 				values[i] = valBuf.get(i);
