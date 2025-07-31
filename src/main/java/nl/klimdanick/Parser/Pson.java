@@ -11,13 +11,13 @@ public class Pson {
 	
     public static void main(String[] args) {
     	JsonObject json = Pson.readFromFile("C://users/danick/Downloads/huge_json_example.json");
-//      JsonObject json = Pson.readFromFile("C://users/danick/Downloads/message.txt");
+//        JsonObject json = Pson.readFromFile("C://users/danick/Downloads/message.txt");
         if (json != null) {
-            System.out.println("JSON loaded!");
-            System.out.println(json);
-        } else {
-            System.err.println("Error while loading JSON-file");
-        }
+////            System.out.println("JSON loaded!");
+            json.toString();
+        } //else {
+//            System.err.println("Error while loading JSON-file");
+//        }
     }
     
     public static JsonObject fromString(String s) {
