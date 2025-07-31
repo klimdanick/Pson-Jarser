@@ -2,40 +2,41 @@ package nl.klimdanick.DataStructure;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Set;
 
-public class JsonArray extends ArrayList{
+public class JsonArray extends ArrayList<Object>{
 
-	private static Class[] allowedTypes = {String.class, Integer.class, Double.class, Boolean.class, JsonArray.class, JsonObject.class};
+    private static final Set<Class<?>> allowedTypes = Set.of(String.class, Integer.class, Double.class, Boolean.class, JsonArray.class, JsonObject.class);
 	
     public JsonArray addItem(Object o) {
     	if (o == null) {
-    		super.add(o);
+    		super.add(null);
     		return this;
     	}
-    	boolean legal = false;
-    	for (int i = 0; i < allowedTypes.length && !legal; i++)
-    		if (o.getClass().equals(allowedTypes[i])) legal = true;
+    	boolean legal = allowedTypes.contains(o.getClass());
+
     	if (legal)
     		super.add(o);
+
         return this;
     }
 
     public String toString() {
-        String s = "[";
+        StringBuilder s = new StringBuilder("[");
         for (int i = 0; i < this.size(); i++) {
             Object o = this.get(i);
             if (o == null) {
-            	s+="null";
-            	if (i<this.size()-1) s+=", ";
+            	s.append("null");
+            	if (i<this.size()-1) s.append(", ");
             	continue;
             }
-            else if (o.getClass() == allowedTypes[5]) s += "\n\t"+o.toString().replaceAll("\n", "\n\t");
-            else if (o.getClass() == allowedTypes[0]) s += "\"" + o.toString() + "\"";
-            else s+=o.toString();
-            if (i<this.size()-1) s+=", ";
-            if (o.getClass() == allowedTypes[5]) s += "\n\t";
+            else if (o.getClass() == JsonObject.class) s.append("\n\t").append(o.toString().replaceAll("\n", "\n\t"));
+            else if (o.getClass() == String.class) s.append("\"").append(o).append("\"");
+            else s.append(o);
+            if (i<this.size()-1) s.append(", ");
+            if (o.getClass() == JsonObject.class) s.append("\n\t");
         }
-        return s+"]";
+        return s.append("]").toString();
     }
 
     public JsonObject getObject(int i) {
@@ -60,9 +61,5 @@ public class JsonArray extends ArrayList{
 
     public boolean getBoolean(int i) {
         return (boolean) this.get(i);
-    }
-
-    public <T> T get(int i, Type T){
-        return (T) get(i);
     }
 }

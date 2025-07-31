@@ -1,28 +1,25 @@
 package nl.klimdanick.DataStructure;
 
 import java.io.*;
-import java.lang.reflect.Type;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-
-import nl.klimdanick.Parser.Pson;
+import java.util.Set;
 
 public class JsonObject {
-    private static Class[] allowedTypes = {String.class, Integer.class, Double.class, Boolean.class, JsonArray.class, JsonObject.class};
+    private static final Set<Class<?>> allowedTypes = Set.of(String.class, Integer.class, Double.class, Boolean.class, JsonArray.class, JsonObject.class);
     public ArrayList<KeyValuePair> fields = new ArrayList<>();
 
     public <K> JsonObject set(String key, K value) {
     	if (value == null) {
     		for(KeyValuePair kvp : fields) if (kvp.key.equals(key)){
-                kvp.value = value;
+                kvp.value = null;
                 return this;
             }
-            fields.add(new KeyValuePair(key, value));
+            fields.add(new KeyValuePair(key, null));
             return this;
     	}
-    	
-        for (Class T : allowedTypes) if (value.getClass().equals(T)) {
+
+        if (allowedTypes.contains(value.getClass())) {
             for(KeyValuePair kvp : fields) if (kvp.key.equals(key)){
                 kvp.value = value;
                 return this;
@@ -89,13 +86,13 @@ public class JsonObject {
     }
 
     public String toString() {
-        String retString = "{\n";
+        StringBuilder retString = new StringBuilder("{\n");
         for (KeyValuePair kvp : fields)
-            retString+= "\t" + (kvp.value == null ? "\""+kvp.key + "\": null" : kvp.value.getClass() == JsonObject.class ? kvp.toString().replaceAll("\n", "\n\t") : kvp.toString()) + (fields.indexOf(kvp) == fields.size()-1 ? "\n" : ",\n");
+            retString.append("\t").append(kvp.value == null ? "\"" + kvp.key + "\": null" : kvp.value.getClass() == JsonObject.class ? kvp.toString().replaceAll("\n", "\n\t") : kvp.toString()).append(fields.indexOf(kvp) == fields.size() - 1 ? "\n" : ",\n");
 
 
-        retString+="}";
-        return retString;
+        retString.append("}");
+        return retString.toString();
     }
     public boolean writeToFile(String path) {return writeToFile(path, false);}
     public boolean writeToFile(String path, boolean Override) {
@@ -105,14 +102,12 @@ public class JsonObject {
         }
         try {
 
-            PrintWriter writer = new PrintWriter(path, "UTF-8");
-            writer.println(this.toString());
+            PrintWriter writer = new PrintWriter(path, StandardCharsets.UTF_8);
+            writer.println(this);
             writer.close();
             return true;
-        } catch (FileNotFoundException e) {
-            return false;
-        } catch (UnsupportedEncodingException e) {
-            return false;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }

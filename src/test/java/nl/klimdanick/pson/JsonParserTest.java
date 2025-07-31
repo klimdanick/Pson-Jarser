@@ -11,8 +11,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class JsonParserTest {
 
-
-
     @Test
 	public void noArrayTest() {
     	String jsonString = "{\"test\": 10}";

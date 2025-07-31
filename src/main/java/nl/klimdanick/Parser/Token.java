@@ -1,7 +1,6 @@
 package nl.klimdanick.Parser;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public abstract class Token {
 	public abstract String toString();
@@ -19,7 +18,7 @@ public abstract class Token {
 			StringBuilder strBuf = new StringBuilder();
 			char[] charBuf = str.toCharArray();
 			int quoteCount = 0;
-			String keyBuf;
+
 			for (int i = 0; i < charBuf.length; i++) {
 				if (charBuf[i] == '"') {
 					quoteCount++;
@@ -90,25 +89,25 @@ public abstract class Token {
 			int CBcount = 0;
 			int SQBcount = 0;
 
-			for (int i = 0; i < charBuf.length; i++) {
-				if (charBuf[i] == '{') CBcount++;
-				if (charBuf[i] == '}') CBcount--;
-				if (charBuf[i] == '[') SQBcount++;
-				if (charBuf[i] == ']') SQBcount--;
-				if (SQBcount == -1 || (SQBcount == 0 && CBcount == 0 && charBuf[i] == ',')) {
-					if (strBuf.isEmpty()) continue;
-					try {
-						Value val = new Value();
-						val.parse(strBuf.toString());
-						valBuf.add(val);
-					} catch (Exception e) {
-						throw new RuntimeException("[Arr] Failed to parse array value: " + e.getMessage(), e);
-					}
-					strBuf.setLength(0);
-					continue;
-				}
-				strBuf.append(charBuf[i]);
-			}
+            for (char c : charBuf) {
+                if (c == '{') CBcount++;
+                if (c == '}') CBcount--;
+                if (c == '[') SQBcount++;
+                if (c == ']') SQBcount--;
+                if (SQBcount == -1 || (SQBcount == 0 && CBcount == 0 && c == ',')) {
+                    if (strBuf.isEmpty()) continue;
+                    try {
+                        Value val = new Value();
+                        val.parse(strBuf.toString());
+                        valBuf.add(val);
+                    } catch (Exception e) {
+                        throw new RuntimeException("[Arr] Failed to parse array value: " + e.getMessage(), e);
+                    }
+                    strBuf.setLength(0);
+                    continue;
+                }
+                strBuf.append(c);
+            }
 			values = new Value[valBuf.size()];
 			for (int i = 0; i < valBuf.size(); i++) {
 				values[i] = valBuf.get(i);
@@ -149,16 +148,12 @@ public abstract class Token {
 			}
 
 			value = new Value();
-			if (!str.isEmpty())
-				value.parse(str);
-			else {
-				System.err.append("FIX");
-			}
+			value.parse(str);
 		}
 
 		public String toString() {
 			StringBuilder str = new StringBuilder("Key {" + key + "}:");
-			if (value != null) str.append(value.toString());
+			if (value != null) str.append(value);
 			else str.append("null");
 			return str.toString();
 		}
@@ -224,7 +219,7 @@ public abstract class Token {
 
 		public String toString() {
 			StringBuilder str = new StringBuilder("Value {");
-			if (value != null) str.append(value.toString());
+			if (value != null) str.append(value);
 			else str.append("null");
 			str.append("}");
 			return str.toString();
