@@ -13,6 +13,9 @@ public abstract class Token {
 		public Obj() {}
 
 		public void parse(String str) {
+			if (str == null || str.isBlank()) {
+				throw new IllegalArgumentException("[Obj] Cannot parse null or empty object string.");
+			}
 			StringBuilder strBuf = new StringBuilder();
 			char[] charBuf = str.toCharArray();
 			int quoteCount = 0;
@@ -29,6 +32,7 @@ public abstract class Token {
 
 					int braceCount = 0;
 					int bracketCount = 0;
+					boolean parsed = false;
 
 					for (; i < charBuf.length; i++) {
 						strBuf.append(charBuf[i]);
@@ -39,11 +43,20 @@ public abstract class Token {
 
 						// when end of object or end of key-value pair, parse the key-value pair
 						if (braceCount == -1 || (braceCount == 0 && bracketCount == 0 && charBuf[i] == ',')) {
-							Token.Key key = new Token.Key(keyName);
-							key.parse(strBuf.toString());
-							Keys.add(key);
+							try {
+								Token.Key key = new Token.Key(keyName);
+								key.parse(strBuf.toString());
+								Keys.add(key);
+							} catch (Exception e) {
+								throw new RuntimeException("[Obj] Failed to parse key '" + keyName + "': " + e.getMessage(), e);
+							}
+							parsed = true;
 							break;
 						}
+					}
+
+					if (!parsed) {
+						throw new IllegalStateException("[Obj] Unterminated key-value pair for key: " + keyName);
 					}
 
 					quoteCount = 0;
@@ -63,6 +76,12 @@ public abstract class Token {
 		public Value[] values;
 		public Arr() {}
 		public void parse(String str) {
+			if (str == null || str.isBlank()) {
+				throw new IllegalArgumentException("[Arr] Cannot parse null or empty array string.");
+			}
+			if (!str.startsWith("[")) {
+				throw new IllegalArgumentException("[Arr] Array must start with '['");
+			}
 			ArrayList<Value> valBuf = new ArrayList<>();
 			str = str.substring(1);
 
@@ -78,10 +97,14 @@ public abstract class Token {
 				if (charBuf[i] == ']') SQBcount--;
 				if (SQBcount == -1 || (SQBcount == 0 && CBcount == 0 && charBuf[i] == ',')) {
 					if (strBuf.isEmpty()) continue;
-					Value val = new Value();
-					val.parse(strBuf.toString());
-					valBuf.add(val);
-					strBuf = new StringBuilder();
+					try {
+						Value val = new Value();
+						val.parse(strBuf.toString());
+						valBuf.add(val);
+					} catch (Exception e) {
+						throw new RuntimeException("[Arr] Failed to parse array value: " + e.getMessage(), e);
+					}
+					strBuf.setLength(0);
 					continue;
 				}
 				strBuf.append(charBuf[i]);
@@ -102,16 +125,31 @@ public abstract class Token {
 	public static class Key extends Token{
 		public String key;
 		public Value value;
-		public Key(String key) {this.key = key;}
-		public void parse(String str) {
-			int firstCol = str.indexOf(':');
-			str = str.substring(firstCol+1, str.length()-1).stripLeading();
-			value = new Value();
-			if (!str.isEmpty())
-				value.parse(str);
-			else {
-				System.err.append("FIX");
+
+		public Key(String key) {
+			if (key == null || key.isBlank()) {
+				throw new IllegalArgumentException("[Key] Key name cannot be null or empty.");
 			}
+			this.key = key;
+		}
+
+		public void parse(String str) {
+			if (str == null || str.isBlank()) {
+				throw new IllegalArgumentException("[Key] Cannot parse null or empty key-value string.");
+			}
+			int firstCol = str.indexOf(':');
+			if (firstCol == -1) {
+				throw new IllegalArgumentException("[Key] Missing ':' in key-value pair: " + str);
+			}
+
+			str = str.substring(firstCol+1, str.length()-1).stripLeading();
+
+			if (str.isEmpty()) {
+				throw new IllegalArgumentException("[Key] Empty value for key: " + key);
+			}
+
+			value = new Value();
+			value.parse(str);
 		}
 
 		public String toString() {
@@ -127,43 +165,56 @@ public abstract class Token {
 		public Class<?> type;
 		public Value() {}
 		public void parse(String str) {
-			str = str.stripLeading().stripTrailing();
+			if (str == null || str.isBlank()) {
+				throw new IllegalArgumentException("[Value] Cannot parse null or empty value string.");
+			}
 
-			if (str.startsWith("{")) {
-				Obj obj = new Obj();
-				obj.parse(str);
-				value = obj;
-				type = Obj.class;
-			}
-			else if (str.startsWith("[")) {
-				Arr arr = new Arr();
-				arr.parse(str);
-				value = arr;
-				type = Arr.class;
-			}
-			else if (str.startsWith("\"")) {
-				value = str.replace("\"", "").replace("\"", "");
-				type = String.class;
-			}
-			else if (str.equals("true")) {
-				value = true;
-				type = Boolean.class;
-			}
-			else if (str.equals("false")) {
-				value = false;
-				type = Boolean.class;
-			}
-			else if (str.contains(".") || str.contains("e") || str.contains("E")) {
-				value = Double.parseDouble(str);
-				type = Double.class;
-			}
-			else if (str.contains("null")) {
-				value = null;
-				type = null;
-			}
-			else {
-				value = Integer.parseInt(str);
-				type = Integer.class;
+			str = str.strip();
+			try {
+				if (str.startsWith("{")) {
+					Obj obj = new Obj();
+					obj.parse(str);
+					value = obj;
+					type = Obj.class;
+				}
+				else if (str.startsWith("[")) {
+					Arr arr = new Arr();
+					arr.parse(str);
+					value = arr;
+					type = Arr.class;
+				}
+				else if (str.startsWith("\"")) {
+					if (!str.endsWith("\"") || str.length() < 2) {
+						throw new IllegalArgumentException("[Value] Invalid string value: " + str);
+					}
+					value = str.replace("\"", "").replace("\"", "");
+					type = String.class;
+				}
+				else if (str.equals("true")) {
+					value = true;
+					type = Boolean.class;
+				}
+				else if (str.equals("false")) {
+					value = false;
+					type = Boolean.class;
+				}
+				else if (str.contains(".") || str.contains("e") || str.contains("E")) {
+					value = Double.parseDouble(str);
+					type = Double.class;
+				}
+				else if (str.contains("null")) {
+					value = null;
+					type = null;
+				}
+				else {
+					value = Integer.parseInt(str);
+					type = Integer.class;
+				}
+
+			} catch (NumberFormatException e) {
+				throw new IllegalArgumentException("[Value] Invalid numeric value: " + str, e);
+			} catch (Exception e) {
+				throw new RuntimeException("[Value] Error parsing value: " + str + ": " + e.getMessage(), e);
 			}
 		}
 
