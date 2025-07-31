@@ -199,7 +199,7 @@ public class JsonParserTest {
 		 		{"complex": {"nested": {"array": [{"deep": "value"}, [null, "text"]]}}},
 			 	"escaped\\\\nnewline", "\\u2028", "\\u2029"
 		   ]
-	 	}
+		}
 		""";
 
 		JsonObject jsonObject = Pson.fromString(jsonString);
