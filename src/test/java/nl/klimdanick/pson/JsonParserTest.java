@@ -7,6 +7,14 @@ import nl.klimdanick.DataStructure.JsonArray;
 import nl.klimdanick.DataStructure.JsonObject;
 import nl.klimdanick.Parser.Pson;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 public class JsonParserTest {
 
 
@@ -17,7 +25,8 @@ public class JsonParserTest {
     	JsonObject jsonObject = Pson.fromString(jsonString);
     	jsonString=jsonString.replaceAll("\\s", "");
 		String parsedJsonString = jsonObject.toString().replaceAll("\\s", "");
-		assert(jsonString.equals(parsedJsonString));
+
+		assertEquals(jsonString,parsedJsonString);
     }
 
 	@Test
@@ -45,7 +54,8 @@ public class JsonParserTest {
 
 		jsonString=jsonString.replaceAll("\\s", "");
 		String parsedJsonString = jsonObject.toString().replaceAll("\\s", "");
-		assert(jsonString.equals(parsedJsonString));
+
+		assertEquals(jsonString,parsedJsonString);
 	}
 
 	@Test
@@ -74,7 +84,8 @@ public class JsonParserTest {
 
 		jsonString=jsonString.replaceAll("\\s", "");
 		String parsedJsonString = jsonObject.toString().replaceAll("\\s", "");
-		assert(jsonString.equals(parsedJsonString));
+
+		assertEquals(jsonString,parsedJsonString);
 	}
 
 	@Test
@@ -88,7 +99,8 @@ public class JsonParserTest {
 		JsonObject expectedJson = new JsonObject().set("special_numbers", new JsonArray().addItem(0).addItem(-0).addItem(1e10).addItem(1e-10).addItem(-1e10).addItem(-1e-10).addItem(0.1e1).addItem(1.0).addItem(-1.0).addItem(1.7976931348623157E308).addItem(-1.7976931348623157E308).addItem(5e-324).addItem(-5e-324));
 		String expectedJsonString = expectedJson.toString().replaceAll("\\s", "").toLowerCase();
 		String parsedJsonString = jsonObject.toString().replaceAll("\\s", "").toLowerCase();
-		assert(expectedJsonString.equals(parsedJsonString));
+
+		assertEquals(expectedJsonString,parsedJsonString);
 	}
 
 	@Test
@@ -102,11 +114,12 @@ public class JsonParserTest {
 
 		jsonString=jsonString.replaceAll("\\s", "");
 		String parsedJsonString = jsonObject.toString().replaceAll("\\s", "");
-		assert(jsonString.equals(parsedJsonString));
+
+		assertEquals(jsonString,parsedJsonString);
 	}
 
 	@Test
-	public void test_Large_mixed_array() {
+	public void testLargeMixedArray() {
 		String jsonString = "{\r\n"
 				+ "  \"large_mixed_array\": [\r\n"
 				+ "    null, false, true, 123, -123, 1.23, -1.23, 1.0E20, \"string\", \r\n"
@@ -118,14 +131,14 @@ public class JsonParserTest {
 				+ "}";
 		JsonObject jsonObject = Pson.fromString(jsonString);
 
-
 		jsonString=jsonString.replaceAll("\\s", "");
 		String parsedJsonString = jsonObject.toString().replaceAll("\\s", "");
-		assert(jsonString.equals(parsedJsonString));
+
+		assertEquals(jsonString,parsedJsonString);
 	}
 
 	@Test
-	public void test_complex_structure() {
+	public void testComplexStructure() {
 		String jsonString = "{\r\n"
 				+ "  \"complex_structure\": {\r\n"
 				+ "    \"a\": {\r\n"
@@ -140,10 +153,24 @@ public class JsonParserTest {
 				+ "}";
 		JsonObject jsonObject = Pson.fromString(jsonString);
 
-
 		jsonString=jsonString.replaceAll("\\s", "");
 		String parsedJsonString = jsonObject.toString().replaceAll("\\s", "");
-		assert(jsonString.equals(parsedJsonString));
+
+		assertEquals(jsonString, parsedJsonString);
 	}
 
+
+	@Test
+	public void testReadJsonFromFile(){
+		String filePath = "res/demo.json";
+		String inputJson = TestUtils.loadFile(filePath);
+		JsonObject jsonObject = Pson.readFromFile(filePath);
+
+		assertNotNull(jsonObject, "The jsonobject should not be null after parsing");
+
+		String formattedInputJson = inputJson.replaceAll("\\s", "");
+		String parsedJsonString =  jsonObject.toString().replaceAll("\\s", "");
+
+		assertEquals(formattedInputJson,parsedJsonString,"The json from the file should be the same as the parsed json");
+	}
 }
