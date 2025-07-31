@@ -192,16 +192,16 @@ public class JsonParserTest {
 
 	@Test
 	public void testLargeMixedArray() {
-		String jsonString = """
+		String jsonString = """ 
 		{
-		  "large_mixed_array": [
-			null, false, true, 123, -123, 1.23, -1.23, 1.0E20, "string",
-			{"key": "value"}, [1, 2, 3], [], {},
-			1.7976931348623157E308, -1.7976931348623157E308, 4.9E-324, -4.9E-324,
-			{"complex": {"nested": {"array": [{"deep": "value"}, [null, "text"]]}},
-			"escaped\\\\nnewline", "\u2028", "\u2029"
-		  ]
-		}
+			"large_mixed_array": [
+				null, false, true, 123, -123, 1.23, -1.23, 1.0E20, "string",
+				{"key": "value"}, [1, 2, 3], [], {},
+			 	1.7976931348623157E308, -1.7976931348623157E308, 4.9E-324, -4.9E-324,\s
+		 		{"complex": {"nested": {"array": [{"deep": "value"}, [null, "text"]]}}},
+			 	"escaped\\\\nnewline", "\\u2028", "\\u2029"
+		   ]
+	 	}
 		""";
 
 		JsonObject jsonObject = Pson.fromString(jsonString);
@@ -249,5 +249,23 @@ public class JsonParserTest {
 		String parsedJsonString =  jsonObject.toString().replaceAll("\\s", "");
 
 		assertEquals(formattedInputJson,parsedJsonString,"The json from the file should be the same as the parsed json");
+	}
+
+
+	//invalid jsons
+	@Test
+	public void testMissingEndBracket(){
+
+		String jsonString = """
+				{
+				"test": 10,
+				
+				""";
+
+		IllegalStateException thrown = assertThrows(
+				IllegalStateException.class,
+				() -> Pson.fromString(jsonString), // code that should throw
+				"Expected doSomething(null) to throw, but it didn't"
+		);
 	}
 }
